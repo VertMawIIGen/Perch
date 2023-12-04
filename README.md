@@ -1,2 +1,3 @@
-# better-paragon
-This is our take on making a better timetable application (we're gonna beat paragon). 
+# Perch 
+
+Yet another timetable application for SBHS, but this one is better, in more ways than one.
