@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, requests
 
 app = Flask(__name__)
 
@@ -14,7 +14,7 @@ def hello_world():
 
 
 @app.route("/nest")  # placeholder for future development probably the daily notices
-def hello_world():
+def something():
     return None
 
 
