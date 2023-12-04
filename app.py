@@ -1,19 +1,19 @@
-from flask import Flask
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
 
 @app.route("/")  # home page / first thing the user sees
+def homepage(): #todo: login function
+    return render_template("homepage.html")
+
+
+@app.route("/treetop")  # the timetable section once you log in
 def hello_world():
     return 'Hello World!'
 
 
-@app.route("/timetable")  # the timetable section once you log in
-def hello_world():
-    return 'Hello World!'
-
-
-@app.route("/notices")  # placeholder for future development
+@app.route("/nest")  # placeholder for future development probably the daily notices
 def hello_world():
     return None
 
