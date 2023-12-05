@@ -1,4 +1,4 @@
-from flask import Flask, render_template, requests
+from flask import Flask, render_template, request #todo: implement database system for user prefs
 
 app = Flask(__name__)
 
