@@ -9,8 +9,8 @@ def homepage(): #todo: login function
 
 
 @app.route("/treetop")  # the timetable section once you log in
-def hello_world():
-    return 'Hello World!'
+def daily_timetable():
+    return render_template("daily_timetable.html")
 
 
 @app.route("/nest")  # placeholder for future development probably the daily notices
