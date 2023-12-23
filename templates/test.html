@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {%  if session %}
+        <p><a href="/testlogout">Logout</a></p>
+        <h1>Welcome</h1>
+        <div><pre>{{ pretty }}</pre></div>
+    {% else %}
+        <p><a href="/testlogin">Login</a></p>
+    {% endif %}
+</body>
+</html>
