@@ -4,8 +4,8 @@ import requests
 
 
 def fetch_data(location: str, token):
-    return requests.get(appConfig.get('BASE_URL') + location,
-                 headers={"Authorization": f"Bearer {token}"}).json()
+    return requests.get((appConfig.get('BASE_URL') + location),
+                        headers={"Authorization": f"Bearer {token}"}).json()
 
 
 app = Flask(__name__)
@@ -41,9 +41,10 @@ oauth.register(
 def homepage():
     if "token" not in session:
         return render_template("test.html", session=session.get("token"),
-                           pretty=session.get("token"))
+                               pretty=session.get("token"))
     access_token = session.get('token')['access_token']
     json_timetable = fetch_data("/timetable/timetable.json", access_token)
+    session['token'] = oauth.testApp.fetch_access_token(refresh_token=session['token']['refresh_token'], grant_type='refresh_token')
     return render_template("test.html", session=session.get("token"),
                            pretty=json_timetable)
 
@@ -61,6 +62,7 @@ def logout():
     session.clear()
     return redirect(url_for("homepage"))
 
+
 @app.route("/callback")
 def callback():
     token = oauth.testApp.authorize_access_token()
@@ -68,7 +70,7 @@ def callback():
     return redirect(url_for("homepage"))
 
 
-#"https://student.sbhs.net.au/api/<component>/<method>.<return format>?<parameters>"
+# "https://student.sbhs.net.au/api/<component>/<method>.<return format>?<parameters>"
 
 # Authorisation Endpoint:	https://student.sbhs.net.au/api/authorize
 # Token Endpoint:	https://student.sbhs.net.au/api/token
