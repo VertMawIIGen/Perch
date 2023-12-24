@@ -3,15 +3,12 @@ from flask import Flask, url_for, redirect, render_template, session
 import requests
 
 
-def fetch_data(location: str, token):
-    return requests.get((appConfig.get('BASE_URL') + location),
-                        headers={"Authorization": f"Bearer {token}"}).json()
+def fetch_data(location: str):
+    return requests.get((appConfig.get('BASE_URL') + location), headers={"Authorization": f"Bearer {session.get('token')['access_token']}"}).json()
 
 
 app = Flask(__name__)
 
-LOGIN_URL = (
-    "https://student.sbhs.net.au/api/authorize?response_type=code&scope=all-ro&state=abc&client_id=authpy&redirect_uri=http://127.0.0.1:5000/callback")
 
 appConfig = {
     "OAUTH2_CLIENT_ID": "authpy",
@@ -42,8 +39,7 @@ def homepage():
     if "token" not in session:
         return render_template("test.html", session=session.get("token"),
                                pretty=session.get("token"))
-    access_token = session.get('token')['access_token']
-    json_timetable = fetch_data("/timetable/timetable.json", access_token)
+    json_timetable = fetch_data("/timetable/timetable.json")
     session['token'] = oauth.testApp.fetch_access_token(refresh_token=session['token']['refresh_token'], grant_type='refresh_token')
     return render_template("test.html", session=session.get("token"),
                            pretty=json_timetable)
@@ -51,7 +47,7 @@ def homepage():
 
 @app.route("/testlogin")
 def login():
-    if "user" in session:
+    if "token" in session:
         return redirect(url_for("homepage"))
     redirect_uri = url_for('callback', _external=True)
     return oauth.testApp.authorize_redirect(redirect_uri=redirect_uri)
