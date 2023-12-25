@@ -24,6 +24,11 @@
         if (timer === 0) {
             timer = 15;
         }
+        else if (timer === 3) {
+            {% if session %}
+                {% set _ = session.update({"token": fetch_new_token}) %}
+            {% endif %}
+        }
     }, 1000);
 </script>
 </html>

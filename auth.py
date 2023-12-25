@@ -3,12 +3,20 @@ from flask import Flask, url_for, redirect, render_template, session, Response
 import requests
 import time
 
-def fetch_data(location: str):
-    return requests.get((appConfig.get('BASE_URL') + location), headers={"Authorization": f"Bearer {session.get('token')['access_token']}"}).json()
+
+def fetch_data(location: str, params: dict = {}):
+    return requests.get((appConfig.get('BASE_URL') + location),
+                        headers={"Authorization": f"Bearer {session.get('token')['access_token']}"},
+                        params=params).json()
+
+
+def fetch_new_token():
+    return oauth.testApp.fetch_access_token(refresh_token=session['token']['refresh_token'],
+                                            grant_type='refresh_token')
 
 
 app = Flask(__name__)
-
+app.jinja_env.globals.update(fetch_new_token=fetch_new_token)
 
 appConfig = {
     "OAUTH2_CLIENT_ID": "authpy",
@@ -39,23 +47,10 @@ def homepage():
     if "token" not in session:
         return render_template("test.html", session=session.get("token"),
                                pretty=session.get("token"))
-    json_timetable = fetch_data("/timetable/daytimetable.json")
-    session['token'] = oauth.testApp.fetch_access_token(refresh_token=session['token']['refresh_token'], grant_type='refresh_token')
+    # return fetch_data("/timetable/daytimetable.json", {"date": "2021-08-20"})
+    json_timetable = fetch_data("/timetable/daytimetable.json", {"date": "2021-08-20"})
     return render_template("test.html", session=session.get("token"),
-                           pretty=json_timetable)
-
-
-@app.route('/content') # render the content a url differnt from index. This will be streamed into the iframe
-def content():
-    def timer(t):
-        for i in range(t):
-            time.sleep(60) #put 60 here if you want to have seconds
-            yield str(i)
-    return Response(timer(100), mimetype='text/html') #at the moment the time value is hardcoded in the function just for simplicity
-
-@app.route('/')
-def index():
-    return render_template('test.html.jinja') # render a template at the index. The content will be embedded in this template
+                           pretty=json_timetable, fetch_new_token=fetch_new_token())
 
 
 @app.route("/testlogin")
