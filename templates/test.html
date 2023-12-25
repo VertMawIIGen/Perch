@@ -8,6 +8,12 @@
     {%  if session %}
         <p><a href="/testlogout">Logout</a></p>
         <h1>Welcome</h1>
+        <h2> countdown </h2>
+        <div>
+            <iframe frameborder="0" noresize="noresize" style='background: transparent; width: 100%; height:100%;' src="{{ url_for('content')}}"></iframe>
+    </div>
+</body>
+
         <div><pre>{{ pretty }}</pre></div>
     {% else %}
         <p><a href="/testlogin">Login</a></p>
