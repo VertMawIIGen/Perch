@@ -8,15 +8,22 @@
     {%  if session %}
         <p><a href="/testlogout">Logout</a></p>
         <h1>Welcome</h1>
-        <h2> countdown </h2>
-        <div>
-            <iframe frameborder="0" noresize="noresize" style='background: transparent; width: 100%; height:100%;' src="{{ url_for('content')}}"></iframe>
-    </div>
-</body>
+        <h2 id="timer"></h2>
 
         <div><pre>{{ pretty }}</pre></div>
     {% else %}
         <p><a href="/testlogin">Login</a></p>
     {% endif %}
 </body>
+<script type="application/javascript">
+    const timerElement = document.getElementById('timer');
+    let timer = 15;
+    setInterval(() => {
+        timerElement.innerText = `${timer}s`;
+        timer--;
+        if (timer === 0) {
+            timer = 15;
+        }
+    }, 1000);
+</script>
 </html>
