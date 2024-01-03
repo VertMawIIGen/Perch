@@ -15,6 +15,7 @@ Current Developmental Stage.
 
 - [x] Boilerplate code.
 - [ ] Initial design concepts (UI/UX Designer's Work).
+- [x] Getting data from the school API.
 - [ ] Making the application.
 - [ ] Deploying the application.
 
