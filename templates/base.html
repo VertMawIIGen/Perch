@@ -7,7 +7,8 @@
     <meta name="keywords" content="SBHS, timetable, application">
     <meta name="author" content="Vert Sauce">
     <title>Perch</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon%20temp.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
@@ -15,6 +16,30 @@
   <nav>
 
   </nav>
+
+ <!-- Flashing success / error messages-->
+  <div class="main p-3">
+        <div style="width:25%; z-index:10; margin:auto;">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        {% if category == 'message' %}
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {% else %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {% endif %}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    {{ message }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            </div>
+            {% block body %}
+            {% endblock %}
+        </div>
+    </div>
+
   <div>
     {% block main_content %}
     {% endblock %}

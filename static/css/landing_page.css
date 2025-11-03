@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+body {
+    font-family: "Open Sans", sans-serif;
+}
+
+img {
+    max-width: 100px;
+    width: 100%;
+}
+
+.nav-link {
+    font-weight: 600;
+    color: black;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.dropdown>.dropdown-menu {
+    background-color: white;
+    border: none;
+    border-radius: 0;
+}
+
+.lni-grid-alt {
+    font-size: 1.5rem;
+}
+
+.lni-previous-step-2 {
+    font-size: 2rem;
+}
+
+#welcome {
+    background-color: lightgray;
+    color: black
+}
+
+@media (min-width: 992px) {
+    .dropdown>.dropdown-menu {
+        visibility: hidden;
+        opacity: 0;
+        top: 100%;
+        display: block;
+        transition: all 0.1s ease-out;
+    }
+
+    .dropdown:hover>.dropdown-menu {
+        padding: 20px 0;
+        display: block;
+        visibility: visible;
+        opacity: 1;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .dropdown-item:hover {
+        color: white;
+        background-color: black;
+    }
+}
