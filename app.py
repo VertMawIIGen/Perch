@@ -23,7 +23,6 @@ def login():
 
 # landing page / first thing the user sees
 @app.route("/")
-@oidc.require_login
 def landing_page():
     if oidc.user_loggedin:
         flash("Successfully logged in.", "success")
