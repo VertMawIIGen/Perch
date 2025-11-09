@@ -5,6 +5,10 @@ from datetime import timedelta
 import os
 
 
+while True:
+    pass
+
+
 def fetch_data(location: str, params: dict = {}):
     return requests.get((appConfig.get('BASE_URL') + location),
                         headers={"Authorization": f"Bearer {session.get('token')['access_token']}"},
@@ -50,23 +54,12 @@ oauth.register(
 def homepage():
     if "token" not in session:
         return render_template("test.html", pretty=session.get("token"))
-    value = fetch_data("/dailynews/list.json")
-    #return value.json()
-    #return [str(i) for i in value]
-    json_timetable = fetch_data("/timetable/daytimetable.json")
-    return json_timetable.json()
+    value = fetch_data("/timetable/daytimetable.json", {"date": "2021-08-20"})
+    return value.json()
+    return [str(i) for i in value]
+    json_timetable = fetch_data("/timetable/daytimetable.json", {"date": "2021-08-20"})
     return render_template("test.html", pretty=json_timetable)
 
-
-@app.route("/canvas")
-def canvas():
-    return requests.get((os.environ.get('CANVAS_URL') + "/api/v1/users/self/courses?per_page=300"),
-                 headers={"Authorization": f"Bearer 14942~Wal0UVvAYBjINFTtXTrGGd8CE3Fw1XLwWL9VSxXVmg8b7RXKfhyYei3kAuJoGFNX"}).json()
-
-    user_info = requests.get((os.environ.get('CANVAS_URL') + "/api/v1/courses/3424/users?per_page=30"),
-                 headers={"Authorization": f"Bearer 14942~Wal0UVvAYBjINFTtXTrGGd8CE3Fw1XLwWL9VSxXVmg8b7RXKfhyYei3kAuJoGFNX"}).json()
-    return user_info
-    return render_template("test.html", pretty=user_info)
 
 @app.route("/testlogin")
 def login():

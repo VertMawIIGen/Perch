@@ -4,10 +4,9 @@ import requests
 from datetime import timedelta
 import os
 
-
 def fetch_data(location: str, params: dict = {}):
-    return requests.get((appConfig.get('BASE_URL') + location),
-                        headers={"Authorization": f"Bearer {session.get('token')['access_token']}"},
+    return requests.get((appConfig.get('CANVAS_URL') + location),
+                        headers={"Authorization": f"Bearer {os.environ.get('CANVAS_TOKEN')}"},
                         params=params)
 
 
@@ -27,8 +26,6 @@ appConfig = {
     "FLASK_PORT": os.environ.get("FLASK_PORT")
 }
 
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=90)
-
 
 app.secret_key = appConfig.get("FLASK_SECRET")
 
@@ -46,47 +43,11 @@ oauth.register(
 )
 
 
-@app.route("/")
-def homepage():
-    if "token" not in session:
-        return render_template("test.html", pretty=session.get("token"))
-    value = fetch_data("/dailynews/list.json")
-    #return value.json()
-    #return [str(i) for i in value]
-    json_timetable = fetch_data("/timetable/daytimetable.json")
-    return json_timetable.json()
-    return render_template("test.html", pretty=json_timetable)
-
-
 @app.route("/canvas")
 def canvas():
-    return requests.get((os.environ.get('CANVAS_URL') + "/api/v1/users/self/courses?per_page=300"),
-                 headers={"Authorization": f"Bearer 14942~Wal0UVvAYBjINFTtXTrGGd8CE3Fw1XLwWL9VSxXVmg8b7RXKfhyYei3kAuJoGFNX"}).json()
-
-    user_info = requests.get((os.environ.get('CANVAS_URL') + "/api/v1/courses/3424/users?per_page=30"),
-                 headers={"Authorization": f"Bearer 14942~Wal0UVvAYBjINFTtXTrGGd8CE3Fw1XLwWL9VSxXVmg8b7RXKfhyYei3kAuJoGFNX"}).json()
-    return user_info
+    user_info = requests.get((os.environ.get('CANVAS_URL') + "/api/v1/users/self"),
+                 headers={"Authorization": f"Bearer {os.environ.get('CANVAS_TOKEN')}"})
     return render_template("test.html", pretty=user_info)
-
-@app.route("/testlogin")
-def login():
-    if "token" in session:
-        return redirect(url_for("homepage"))
-    redirect_uri = url_for('callback', _external=True)
-    return oauth.testApp.authorize_redirect(redirect_uri=redirect_uri)
-
-
-@app.route("/testlogout")
-def logout():
-    session.clear()
-    return redirect(url_for("homepage"))
-
-
-@app.route("/callback")
-def callback():
-    token = oauth.testApp.authorize_access_token()
-    session["token"] = token
-    return redirect(url_for("homepage"))
 
 
 # "https://student.sbhs.net.au/api/<component>/<method>.<return format>?<parameters>"

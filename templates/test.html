@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="/static/test.css" rel="stylesheet">
 </head>
 <body>
     {%  if session %}
         <p><a href="/testlogout">Logout</a></p>
-        <h1>Welcome</h1>
+        <h1 id="Welcome">Welcome</h1>
         <h2 id="timer"></h2>
 
         <div><pre>{{ pretty }}</pre></div>
@@ -15,20 +16,23 @@
         <p><a href="/testlogin">Login</a></p>
     {% endif %}
 </body>
-<script type="application/javascript">
-    const timerElement = document.getElementById('timer');
-    let timer = 15;
-    setInterval(() => {
-        timerElement.innerText = `${timer}s`;
-        timer--;
-        if (timer === 0) {
-            timer = 15;
-        }
-        else if (timer === 3) {
-            {% if session %}
-                {% set _ = session.update({"token": fetch_new_token}) %}
-            {% endif %}
-        }
-    }, 1000);
+<script>
+{#    const timerElement = document.getElementById('timer');#}
+{#    let timer = 5;#}
+{#    {% if session %}{% set _ = session.update({"token": fetch_new_token()}) %}{% endif %}#}
+{#    time_interval = setInterval(() => {#}
+{#        timerElement.innerText = `${timer}s`;#}
+{#        timer--;#}
+{#        if (timer === 1) {#}
+{#            clearInterval(time_interval)#}
+{#        }#}
+{#        else if (timer === 3) {#}
+{#            {% if session %}#}
+{#                console.log("{{ session }}");#}
+{#            {% endif %}#}
+{#        }#}
+{#    }, 1000);#}
+{#    {% if session %}{% set _ = session.update({"token": fetch_new_token()}) %}{% endif %}#}
+
 </script>
 </html>
