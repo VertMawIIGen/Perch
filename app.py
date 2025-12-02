@@ -41,18 +41,25 @@ def daily_timetable():
         'Authorization': f'Bearer {access_token}',
         'Content-Type': 'application/json'
     }
-    response = requests.get('https://student.sbhs.net.au/api/timetable/daytimetable.json', headers=headers)
-    json_data = response.json()
+    student_timetable = requests.get('https://student.sbhs.net.au/api/timetable/daytimetable.json', headers=headers)
+    student_data = student_timetable.json()
 
     # pprint.pprint(json_data)
 
-    daily_bells = json_data.get('bells')
-    room_variations = json_data.get('roomVariations')
-    teacher_variations = json_data.get('classVariations')
-    student_timetable = json_data.get('timetable')
+    # list of dictionaries
+    daily_bells = student_data.get('bells')
+    room_variations = student_data.get('roomVariations')
+    teacher_variations = student_data.get('classVariations')
+    student_timetable = student_data.get('timetable')
+
+    bell_information = requests.get('https://student.sbhs.net.au/api/timetable/bells.json')
+    bell_data = bell_information.json()
+
+
+   # print(daily_bells)
 
     return render_template("daily_timetable.html", daily_bells=daily_bells, room_variations=room_variations,
-                           teacher_variations=teacher_variations, student_timetable=student_timetable)
+                           teacher_variations=teacher_variations, student_timetable=student_timetable, bell_data = bell_data)
 
 
 @app.route("/nest")

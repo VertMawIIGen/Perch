@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block title %}
-    Daily Timetable
+    Daily Timetable | Perch
 {% endblock %}
 
 {% block main_content %}
@@ -15,4 +15,22 @@
         till English
     </h2>
     <h2>Hello World!</h2>
-{% endblock%}
+{% endblock %}
+
+{% block script_link %}
+    <script>
+        var dailyBells = {{ daily_bells | tojson | safe }};
+        var roomVariations = {{ room_variations | tojson | safe }};
+        var teacherVariations = {{ teacher_variations | tojson | safe }};
+        var studentTimetable = {{ student_timetable | tojson | safe }};
+        var bellData = {{ bell_data | tojson | safe }};
+
+        const menuButton = document.querySelector('.menu-button');
+        const menuContainer = document.querySelector('.menu-container');
+
+        menuButton.addEventListener('click', () => {
+            menuContainer.classList.toggle('active');
+        });
+    </script>
+    <script src="/static/javascript/daily_timetable.js"></script>
+{% endblock %}
