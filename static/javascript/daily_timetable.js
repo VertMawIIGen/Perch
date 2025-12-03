@@ -18,8 +18,7 @@ function calculateTime(dailyBells, roomVariations, teacherVariations, bellData) 
     var foundNext = false
     while (i < len || foundNext === false) {
         var targetDate = new Date(``)
-        timeRemaining = now -
-        i++
+        timeRemaining = now - i++
     }
 }
 
